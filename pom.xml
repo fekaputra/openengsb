@@ -86,16 +86,20 @@
     <module>components/weaver/test</module>
     <module>components/console</module>
     <module>components/edb</module>
+<!--    
     <module>components/ekb/common</module>
     <module>components/ekb/graphdb-orient</module>
     <module>components/ekb/modelregistry-tracker</module>
     <module>components/ekb/persistence-query-edb</module>
     <module>components/ekb/transformation-wonderland</module>
     <module>components/ekb/persistence-persist-edb</module>
+ -->    
     <module>components/persistence</module>
     <module>components/services</module>
     <module>components/workflow</module>
     <module>components/info</module>
+    <!-- OpenEngSB Experimental EKB Modules -->
+    <module>experimental/ekb</module>
     <!-- OpenEngSB Core Domain Modules -->
     <module>domain/auditing</module>
     <module>domain/example</module>
