@@ -99,7 +99,9 @@
     <module>components/workflow</module>
     <module>components/info</module>
     <!-- OpenEngSB Experimental EKB Modules -->
-    <module>experimental/ekb</module>
+    <module>experimental/general</module>
+    <module>experimental/api</module>
+    <module>experimental/file</module>
     <!-- OpenEngSB Core Domain Modules -->
     <module>domain/auditing</module>
     <module>domain/example</module>
