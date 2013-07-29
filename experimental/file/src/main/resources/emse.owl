@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
+    xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://www.cdl.ifs.tuwien.ac.at/emse.owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+    xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xml:base="http://www.cdl.ifs.tuwien.ac.at/emse.owl">
+  <owl:Ontology rdf:about=""/>
+  <rdfs:Class rdf:ID="Measurement"/>
+  <rdfs:Class rdf:ID="Publication"/>
+  <rdfs:Class rdf:ID="ResponseVariable"/>
+  <rdfs:Class rdf:ID="ExperimentRun"/>
+  <rdfs:Class rdf:ID="Hypotheses"/>
+  <rdfs:Class rdf:ID="Experiment"/>
+  <owl:ObjectProperty rdf:ID="fromResponseVariable">
+    <rdfs:range rdf:resource="#ResponseVariable"/>
+    <rdfs:domain rdf:resource="#Measurement"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasHypotheses">
+    <rdfs:range rdf:resource="#Hypotheses"/>
+    <rdfs:domain rdf:resource="#Experiment"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasMeasurements">
+    <rdfs:range rdf:resource="#Measurement"/>
+    <rdfs:domain rdf:resource="#ExperimentRun"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasPublication">
+    <rdfs:range rdf:resource="#Publication"/>
+    <rdfs:domain rdf:resource="#Experiment"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasExperimentRun">
+    <rdfs:domain rdf:resource="#Experiment"/>
+    <rdfs:range rdf:resource="#ExperimentRun"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="hasHypothesesTitle">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Hypotheses"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasReferences">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Publication"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasValue">
+    <rdfs:domain rdf:resource="#Measurement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasAuthors">
+    <rdfs:domain rdf:resource="#Publication"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasName">
+    <rdfs:domain rdf:resource="#ResponseVariable"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasCites">
+    <rdfs:domain rdf:resource="#Publication"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasType">
+    <rdfs:domain rdf:resource="#Publication"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasKeywords">
+    <rdfs:domain rdf:resource="#Publication"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasTitle">
+    <rdfs:domain rdf:resource="#Publication"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasGroup">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#ExperimentRun"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasArtefact">
+    <rdfs:domain rdf:resource="#Experiment"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasDateEnd">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdfs:domain rdf:resource="#Experiment"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasHypothesesType">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Hypotheses"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasYear">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:domain rdf:resource="#Publication"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasDateStart">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <rdfs:domain rdf:resource="#Experiment"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasDesignType">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Experiment"/>
+  </owl:DatatypeProperty>
+  <ResponseVariable rdf:ID="ResponseVariable_7"/>
+  <Measurement rdf:ID="Measurement_3"/>
+  <Publication rdf:ID="Publication_2">
+    <hasAuthors rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Walter Gutjahr</hasAuthors>
+    <hasAuthors rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Stefan Biffl</hasAuthors>
+    <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >2001</hasYear>
+    <hasType rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Conference Proceeding</hasType>
+    <hasTitle rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Influence of Team Size and Defect Detection Technique on Inspection Effectiveness</hasTitle>
+  </Publication>
+  <Hypotheses rdf:ID="Hypotheses_4"/>
+  <Experiment rdf:ID="Experiment_6"/>
+  <ExperimentRun rdf:ID="ExperimentRun_5"/>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 3.4.8, Build 629)  http://protege.stanford.edu -->

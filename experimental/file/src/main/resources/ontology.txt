@@ -1,0 +1,36 @@
+Notification
+	hasMessage (multiple string)
+	hasPriority (single string(high/medium/low))
+	hasRecipient (multiple person)
+Person
+	hasEmail (multiple string)
+	isParticipantOf (multiple Project)
+Client (is-a Person)
+	isProjectOwnerOf (multiple Project)
+Engineer (is-a Person)
+	isProjectLeaderOf (multiple Project)
+	isResponsibleOf (multiple requirement)
+Project
+	hasStartDate (single Date)
+	hasEndDate (single Date)
+	hasParticipant (multiple Person)
+	hasPhase (single string (initial/requirement/production/testing/closing))
+	hasProjectLeader (single Engineer)
+	hasProjectOwner (single Client)
+	
+Requirement
+	hasRequirementStatus (single string (initial/in_progress/ready_for_test))
+	hasRequirementText (single string)
+	isCreatedBy (multiple Person)
+	isCritical (single boolean)
+	isPartOfProject (single Project)
+	
+Test_Case
+	hasTestCaseText (single string)
+	hasTestRequirement (multiple requirement)
+Test_Run
+	hasExecutor (multiple Person)
+	hasRunTime (single DateTime)
+	hasTestCase (single Test_Case)
+	hasTestStatus (single string(tested_ok/tested_not_ok/initial/in_progress))
+	

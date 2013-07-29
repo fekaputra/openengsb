@@ -120,3 +120,17 @@ velocity.log*
 #clover files
 #================
 .clover
+experimental/pm-onto.pprj
+experimental/pm-onto.repository
+experimental/file/water_works.owl
+experimental/file/water_works2.owl
+experimental/file/src/main/resources/emse.pprj
+experimental/file/src/main/resources/emse.repository
+experimental/file/src/main/resources/emse_seco.repository
+experimental/file/src/main/resources/emsebiffl.pprj
+experimental/file/src/main/resources/emsebiffl.repository
+experimental/file/catalog-v001.xml
+experimental/file/gate_control.owl
+experimental/file/gate_control2.owl
+experimental/api/src/main/resource/catalog-v001.xml
+experimental/api/src/main/resource/pm-onto.pprj

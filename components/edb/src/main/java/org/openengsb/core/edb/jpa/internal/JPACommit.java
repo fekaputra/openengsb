@@ -117,7 +117,7 @@ public class JPACommit extends VersionedEntity implements EDBCommit {
         return objects;
     }
 
-    @Override
+    @Override 
     public final List<String> getDeletions() {
         return deletions != null ? deletions : new ArrayList<String>();
     }
