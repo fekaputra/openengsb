@@ -50,9 +50,9 @@ public class OntologyServiceImpl implements OntologyService {
 			if(in==null) throw new IllegalArgumentException("File: '"+URL+"' not found");
 			model.read(in, null);
 			
-			for(Map.Entry<String, String> entry : model.getNsPrefixMap().entrySet()) {
-				System.out.println(entry.getKey() + "/" + entry.getValue());
-			}
+//			for(Map.Entry<String, String> entry : model.getNsPrefixMap().entrySet()) {
+//				System.out.println(entry.getKey() + "/" + entry.getValue());
+//			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

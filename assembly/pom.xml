@@ -314,5 +314,8 @@
       </snapshots>
     </repository>
   </repositories>
+  <modules>
+  	<module>exp.ontology</module>
+  </modules>
 </project>
 
