@@ -1,14 +1,13 @@
 package org.openengsb.experimental.ekb;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 import org.openengsb.core.api.model.OpenEngSBModel;
 import org.openengsb.core.ekb.api.EKBCommit;
 import org.openengsb.experimental.ekb.onto.api.OntologyService;
 import org.openengsb.experimental.ekb.onto.file.OntologyServiceImpl;
-import org.openengsb.experimental.ekb.onto.persistence.Client;
 import org.openengsb.experimental.ekb.onto.persistence.ProjectModel;
 
 public class ModelTest {
@@ -25,9 +24,6 @@ public class ModelTest {
 		OntologyService impl = new OntologyServiceImpl("pm-onto.owl");
 		
         EKBCommit commit = OntologyServiceImpl.generateTestCase();
-//		commit = new EKBCommit();
-//        commit.setDomainId("testdomain").setConnectorId("testconnector").setInstanceId("testinstance");
-//        commit.addInsert(new ClientModel());
         
         impl.OntoCommit(commit);
 	}

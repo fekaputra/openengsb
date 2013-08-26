@@ -169,9 +169,9 @@ public class OntologyServiceImpl implements OntologyService {
 		fullObj.addAll(ConvertToOnto(update, ci));
 		fullObj.addAll(ConvertToOnto(delete, ci));
 		
-//		for(OntoObjectEntry entry : fullObj) {
-//			System.out.println("::"+entry.getSubject()+"<>"+entry.getPredicate()+"<>"+entry.getObject()+"::");
-//		}
+		for(OntoObjectEntry entry : fullObj) {
+			System.out.println("::"+entry.getSubject()+"<>"+entry.getPredicate()+"<>"+entry.getObject()+"::");
+		}
 		
 		insertIntoOnto(fullObj);
 		save("test2.owl");
@@ -232,10 +232,7 @@ public class OntologyServiceImpl implements OntologyService {
 		}
 		
 		for(OpenEngSBModel insert : commit.getInserts()) {
-//			System.out.println(insert.toString());
-			for(OpenEngSBModelEntry entry : insert.toOpenEngSBModelEntries()) {
-				//
-			}
+			System.out.println(insert.toString());
 		}
 		
 		return commit;

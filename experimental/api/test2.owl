@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="US-ASCII"?>
 <rdf:RDF
     xmlns="http://www.cdl.ifs.tuwien.ac.at/pm.owl#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -8,10 +9,6 @@
     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" > 
-  <rdf:Description rdf:nodeID="A0">
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Run"/>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasMessage">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Notification"/>
@@ -22,39 +19,57 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Notification">
+  <rdf:Description rdf:nodeID="A0">
+    <owl:unionOf rdf:nodeID="A1"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasPhase">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-    <rdfs:range rdf:nodeID="A1"/>
-    <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Notification">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#isParticipantOf">
     <rdfs:range rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasPhase">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:nodeID="A2"/>
+    <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A3">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ready_for_test</rdf:first>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasProjectOwner">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
     <rdfs:subPropertyOf rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasParticipant"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A2">
-    <rdf:rest rdf:nodeID="A3"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">initial</rdf:first>
-  </rdf:Description>
   <rdf:Description rdf:nodeID="A4">
-    <owl:oneOf rdf:nodeID="A5"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DataRange"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Run"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_433754868">
+    <hasEmail>email7</hasEmail>
+    <name>name7</name>
+    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A5">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">closing</rdf:first>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A6">
+    <rdf:rest rdf:nodeID="A7"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">initial</rdf:first>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A6">
-    <rdf:rest rdf:nodeID="A7"/>
-    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_920461486">
+    <hasEmail>email8</hasEmail>
+    <name>name8</name>
+    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasRequirementText">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
@@ -62,43 +77,35 @@
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Requirement"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1440466533">
-    <hasEmail>email6</hasEmail>
-    <name>name6</name>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_659346566">
+    <hasEmail>email4</hasEmail>
+    <name>name4</name>
     <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client">
     <rdfs:subClassOf rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1403440494">
-    <hasEmail>email3</hasEmail>
-    <name>name3</name>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1353880896">
+    <hasEmail>email6</hasEmail>
+    <name>name6</name>
     <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A8">
-    <owl:oneOf rdf:nodeID="A9"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DataRange"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#isPartOfProject">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Requirement"/>
     <rdfs:range rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A10">
-    <owl:oneOf rdf:nodeID="A11"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DataRange"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A12">
-    <rdf:rest rdf:nodeID="A0"/>
-    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A13">
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">testing</rdf:first>
-    <rdf:rest rdf:nodeID="A14"/>
+  <rdf:Description rdf:nodeID="A8">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</rdf:first>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Case">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A9">
+    <owl:oneOf rdf:nodeID="A10"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DataRange"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasTestCaseText">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Case"/>
@@ -106,26 +113,23 @@
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A1">
-    <owl:oneOf rdf:nodeID="A2"/>
+  <rdf:Description rdf:nodeID="A11">
+    <owl:oneOf rdf:nodeID="A12"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DataRange"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A15">
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</rdf:first>
-    <rdf:rest rdf:nodeID="A16"/>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_129417843">
+    <hasEmail>email3</hasEmail>
+    <name>name3</name>
+    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A5">
-    <rdf:rest rdf:nodeID="A15"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</rdf:first>
+  <rdf:Description rdf:nodeID="A7">
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">in_progress</rdf:first>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasRecipient">
     <rdfs:range rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person"/>
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Notification"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A17">
-    <rdf:rest rdf:nodeID="A6"/>
-    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Requirement"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasProjectLeader">
     <rdfs:subPropertyOf rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasParticipant"/>
@@ -137,18 +141,10 @@
     <rdfs:subPropertyOf rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#isParticipantOf"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A18">
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ready_for_test</rdf:first>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#name">
-    <rdfs:domain rdf:nodeID="A19"/>
+    <rdfs:domain rdf:nodeID="A0"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A14">
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">closing</rdf:first>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasStartDate">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
@@ -156,56 +152,68 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </rdf:Description>
+  <rdf:Description rdf:nodeID="A13">
+    <rdf:rest rdf:nodeID="A14"/>
+    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Case"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A12">
+    <rdf:rest rdf:nodeID="A15"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">initial</rdf:first>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A16">
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</rdf:first>
+    <rdf:rest rdf:nodeID="A8"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A17">
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">production</rdf:first>
+    <rdf:rest rdf:nodeID="A18"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasTestRequirements">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Case"/>
     <rdfs:range rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Requirement"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A20">
-    <rdf:rest rdf:nodeID="A12"/>
-    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Notification"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasExecutor">
     <rdfs:range rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Engineer"/>
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Run"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A16">
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</rdf:first>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1074792945">
+    <hasEmail>email1</hasEmail>
+    <name>name1</name>
+    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A21">
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">production</rdf:first>
-    <rdf:rest rdf:nodeID="A13"/>
+  <rdf:Description rdf:nodeID="A19">
+    <owl:oneOf rdf:nodeID="A20"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DataRange"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_211104928">
+    <hasEmail>email5</hasEmail>
+    <name>name5</name>
+    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasParticipant">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
     <rdfs:range rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A22">
-    <rdf:rest rdf:nodeID="A23"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">initial</rdf:first>
+  <rdf:Description rdf:nodeID="A14">
+    <rdf:rest rdf:nodeID="A21"/>
+    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Notification"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1149757772">
-    <hasEmail>email4</hasEmail>
-    <name>name4</name>
-    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
+  <rdf:Description rdf:nodeID="A10">
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tested_ok</rdf:first>
+    <rdf:rest rdf:nodeID="A22"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A24">
-    <rdf:rest rdf:nodeID="A18"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">in_progress</rdf:first>
+  <rdf:Description rdf:nodeID="A23">
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">requirement</rdf:first>
+    <rdf:rest rdf:nodeID="A17"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasPriority">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Notification"/>
-    <rdfs:range rdf:nodeID="A4"/>
+    <rdfs:range rdf:nodeID="A19"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1974675309">
-    <hasEmail>email2</hasEmail>
-    <name>name2</name>
-    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#isCritical">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
@@ -227,45 +235,34 @@
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Run"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_15073043">
-    <hasEmail>email7</hasEmail>
-    <name>name7</name>
-    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1365900223">
-    <hasEmail>email9</hasEmail>
-    <name>name9</name>
-    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A25">
-    <rdf:rest rdf:nodeID="A22"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tested_not_ok</rdf:first>
+  <rdf:Description rdf:nodeID="A24">
+    <rdf:rest rdf:nodeID="A13"/>
+    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasRequirementStatus">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Requirement"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-    <rdfs:range rdf:nodeID="A10"/>
+    <rdfs:range rdf:nodeID="A11"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A15">
+    <rdf:rest rdf:nodeID="A3"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">in_progress</rdf:first>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A18">
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">testing</rdf:first>
+    <rdf:rest rdf:nodeID="A5"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasEndDate">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Project"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1065650508">
-    <hasEmail>email5</hasEmail>
-    <name>name5</name>
-    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasRunTime">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Run"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A3">
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">requirement</rdf:first>
-    <rdf:rest rdf:nodeID="A21"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Engineer">
     <rdfs:subClassOf rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person"/>
@@ -274,21 +271,12 @@
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#hasTestStatus">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Run"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-    <rdfs:range rdf:nodeID="A8"/>
+    <rdfs:range rdf:nodeID="A9"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A19">
-    <owl:unionOf rdf:nodeID="A17"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A23">
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">in_progress</rdf:first>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_157424581">
-    <hasEmail>email1</hasEmail>
-    <name>name1</name>
-    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
+  <rdf:Description rdf:nodeID="A20">
+    <rdf:rest rdf:nodeID="A16"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</rdf:first>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
@@ -296,27 +284,40 @@
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Requirement">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A11">
-    <rdf:rest rdf:nodeID="A24"/>
+  <rdf:Description rdf:nodeID="A25">
+    <rdf:rest rdf:nodeID="A23"/>
     <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">initial</rdf:first>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_2099863472">
+    <hasEmail>email2</hasEmail>
+    <name>name2</name>
+    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A21">
+    <rdf:rest rdf:nodeID="A4"/>
+    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A22">
+    <rdf:rest rdf:nodeID="A6"/>
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tested_not_ok</rdf:first>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_109630260">
+    <hasEmail>email9</hasEmail>
+    <name>name9</name>
+    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#isCreatedBy">
     <rdfs:domain rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Requirement"/>
     <rdfs:range rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="A7">
-    <rdf:rest rdf:nodeID="A20"/>
-    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Test_Case"/>
+  <rdf:Description rdf:nodeID="A2">
+    <owl:oneOf rdf:nodeID="A25"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DataRange"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client_1284800663">
-    <hasEmail>email8</hasEmail>
-    <name>name8</name>
-    <rdf:type rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Client"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="A9">
-    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tested_ok</rdf:first>
-    <rdf:rest rdf:nodeID="A25"/>
+  <rdf:Description rdf:nodeID="A1">
+    <rdf:rest rdf:nodeID="A24"/>
+    <rdf:first rdf:resource="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Requirement"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.cdl.ifs.tuwien.ac.at/pm.owl#Person">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
