@@ -19,20 +19,24 @@ package org.openengsb.core.usersync;
 import java.util.Collection;
 import java.util.List;
 
+import org.openengsb.connector.wicketacl.WicketPermission;
 import org.openengsb.core.api.AliveState;
 import org.openengsb.core.api.context.ContextHolder;
 import org.openengsb.core.api.security.AuthenticationContext;
+import org.openengsb.core.api.security.model.Permission;
 import org.openengsb.core.api.security.service.AccessDeniedException;
 import org.openengsb.core.api.security.service.PermissionSetAlreadyExistsException;
 import org.openengsb.core.api.security.service.UserDataManager;
 import org.openengsb.core.api.security.service.UserExistsException;
 import org.openengsb.core.common.AbstractOpenEngSBService;
+import org.openengsb.core.ekb.api.EDBQueryFilter;
 import org.openengsb.core.ekb.api.EKBCommit;
-import org.openengsb.core.ekb.api.PersistInterface;
-import org.openengsb.core.ekb.api.QueryInterface;
+import org.openengsb.core.ekb.api.EKBService;
+import org.openengsb.core.ekb.api.SingleModelQuery;
 import org.openengsb.core.usersync.exception.AuthenticationException;
 import org.openengsb.domain.userprojects.model.Assignment;
 import org.openengsb.domain.userprojects.model.Attribute;
+import org.openengsb.domain.userprojects.model.Credential;
 import org.openengsb.domain.userprojects.model.Project;
 import org.openengsb.domain.userprojects.model.Role;
 import org.openengsb.domain.userprojects.model.User;
@@ -50,9 +54,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
 
     private UserDataManager userManager;
 
-    private PersistInterface persistService;
-
-    private QueryInterface queryService;
+    private EKBService ekbService;
 
     private AuthenticationContext authenticationContext;
 
@@ -129,7 +131,9 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
 
         EKBCommit commit = getEKBCommit();
         for (Project project : projects) {
-            List<Project> result = queryService.queryByString(Project.class, "name:\"" + project.getName() + "\"");
+
+            List<Project> result = ekbService.query(new SingleModelQuery(Project.class, new EDBQueryFilter("name:\""
+                    + project.getName() + "\""), null));
 
             if (result.size() == 0) {
                 commit.addInsert(project);
@@ -138,7 +142,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
             }
         }
 
-        persistService.commit(commit);
+        ekbService.commit(commit);
         revokePersistenceAccess();
     }
 
@@ -153,7 +157,8 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
         EKBCommit commit = getEKBCommit();
 
         for (Project project : projects) {
-            List<Project> result = queryService.queryByString(Project.class, "name:\"" + project.getName() + "\"");
+            List<Project> result = ekbService.query(new SingleModelQuery(Project.class, new EDBQueryFilter("name:\""
+                    + project.getName() + "\""), null));
 
             if (result.size() == 0) {
                 LOGGER.warn("Project {1} does not exist.", project.getName());
@@ -162,7 +167,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
             }
             deleteAllAssignmentsForProject(project);
         }
-        persistService.commit(commit);
+        ekbService.commit(commit);
         revokePersistenceAccess();
     }
 
@@ -315,20 +320,15 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
 
     @Override
     public AliveState getAliveState() {
-        return userManager == null || persistService == null || queryService == null ? AliveState.OFFLINE
-            : AliveState.ONLINE;
+        return userManager == null || ekbService == null ? AliveState.OFFLINE : AliveState.ONLINE;
     }
 
     public void setUserManager(UserDataManager userManager) {
         this.userManager = userManager;
     }
 
-    public void setPersistService(PersistInterface persistService) {
-        this.persistService = persistService;
-    }
-
-    public void setQueryService(QueryInterface queryService) {
-        this.queryService = queryService;
+    public void setEkbService(EKBService ekbService) {
+        this.ekbService = ekbService;
     }
 
     public void setAuthenticationContext(AuthenticationContext authenticationContext) {
@@ -336,7 +336,8 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++ Methods for UserDataManager Access +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++ Methods for UserDataManager Access
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public void addUserInUserManager(User user) {
         // Add user
@@ -347,6 +348,11 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
                 LOGGER.error("User already exists!", e);
                 return;
             }
+        }
+
+        // Add credential
+        for (Credential credential : user.getCredentials()) {
+            userManager.setUserCredentials(user.getUsername(), credential.getType(), credential.getValue());
         }
 
         // Add attributes
@@ -366,7 +372,19 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
 
         String setName = role.getName();
 
-        if (!userManager.getPermissionSetList().contains(setName)) {
+        if (userManager.getPermissionSetList().contains(setName)) {
+            // Update existing PermissionSet
+            Collection<Permission> oldPermissions = userManager.getAllPermissionsFromPermissionSet(setName);
+
+            // Delete old Permissions
+            userManager.removePermissionFromSet(setName, oldPermissions.toArray(new Permission[oldPermissions.size()]));
+
+            // Delete old PermissionSets
+            userManager.removePermissionSetFromPermissionSet(setName,
+                    role.getRoles().toArray(new String[role.getRoles().size()]));
+
+        } else {
+            // Create new PermissionSet
             try {
                 LOGGER.debug("Create permissionset: " + setName);
                 userManager.createPermissionSet(setName);
@@ -376,6 +394,17 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
                 LOGGER.error("Entry exists exception. This seems impossible.", e);
             }
         }
+
+        Collection<Permission> permissionList = Sets.newHashSet();
+
+        for (String permission : role.getPermissions()) {
+            permissionList.add(new WicketPermission(permission));
+        }
+
+        // Add information to PermissionSet
+        userManager.addPermissionToSet(setName, permissionList.toArray(new Permission[permissionList.size()]));
+        userManager.addPermissionSetToPermissionSet(setName, role.getRoles()
+                .toArray(new String[role.getRoles().size()]));
     }
 
     private void deleteRoleFromUserManager(String role) {
@@ -394,11 +423,17 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
                     userManager.removePermissionSetFromPermissionSet(permissionSet, role);
                 }
             }
+
+            // Remote permissions from PermissionSet
+            for (Permission permission : userManager.getAllPermissionsFromPermissionSet(role)) {
+                userManager.removePermissionFromSet(role, permission);
+            }
         }
     }
 
     private void addAssignmentInUserManager(Assignment assignment) {
         String user = assignment.getUser();
+        String project = assignment.getProject();
 
         for (String permissionSet : assignment.getRoles()) {
             if (userManager.getPermissionSetList().contains(permissionSet)) {
@@ -408,19 +443,30 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
                 LOGGER.debug("Role not found: " + permissionSet);
             }
         }
+
+        for (String permission : assignment.getPermissions()) {
+            userManager.addPermissionToUser(user, new WicketPermission(permission, null, project));
+        }
+
     }
 
     private void deleteAssignmentFromUserManager(Assignment assignment) {
 
         String user = assignment.getUser();
+        String project = assignment.getProject();
 
         for (String permissionSet : assignment.getRoles()) {
             userManager.removePermissionSetFromUser(user, permissionSet);
         }
+
+        for (String permission : assignment.getPermissions()) {
+            userManager.removePermissionFromUser(user, new WicketPermission(permission, null, project));
+        }
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++ Methods for Persistance Access +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++ Methods for Persistance Access
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void addUserInPersistence(User user) {
         addUsersInPersistence(Sets.newHashSet(user));
@@ -431,7 +477,9 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
         EKBCommit commit = getEKBCommit();
 
         for (User user : users) {
-            List<User> result = queryService.queryByString(User.class, "username:\"" + user.getUsername() + "\"");
+
+            List<User> result = ekbService.query(new SingleModelQuery(Project.class, new EDBQueryFilter("username:\""
+                    + user.getUsername() + "\""), null));
 
             if (result.size() == 0) {
                 LOGGER.debug("Create User " + user.getUsername());
@@ -445,7 +493,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
             }
         }
 
-        persistService.commit(commit);
+        ekbService.commit(commit);
         revokePersistenceAccess();
     }
 
@@ -458,7 +506,8 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
         EKBCommit commit = getEKBCommit();
 
         for (User user : users) {
-            List<User> result = queryService.queryByString(User.class, "username:\"" + user.getUsername() + "\"");
+            List<User> result = ekbService.query(new SingleModelQuery(Project.class, new EDBQueryFilter("username:\""
+                    + user.getUsername() + "\""), null));
 
             if (result.size() == 0) {
                 LOGGER.warn("User {1} does not exist.", user.getUsername());
@@ -467,7 +516,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
             }
         }
 
-        persistService.commit(commit);
+        ekbService.commit(commit);
         revokePersistenceAccess();
     }
 
@@ -480,7 +529,8 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
         EKBCommit commit = getEKBCommit();
 
         for (Role role : roles) {
-            List<Role> result = queryService.queryByString(Role.class, "name:\"" + role.getName() + "\"");
+            List<Role> result = ekbService.query(new SingleModelQuery(Role.class, new EDBQueryFilter("name:\""
+                    + role.getName() + "\""), null));
 
             if (result.size() == 0) {
                 commit.addInsert(role);
@@ -489,7 +539,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
             }
         }
 
-        persistService.commit(commit);
+        ekbService.commit(commit);
         revokePersistenceAccess();
     }
 
@@ -502,7 +552,8 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
         EKBCommit commit = getEKBCommit();
 
         for (Role role : roles) {
-            List<Role> result = queryService.queryByString(Role.class, "name:\"" + role.getName() + "\"");
+            List<Role> result = ekbService.query(new SingleModelQuery(Role.class, new EDBQueryFilter("name:\""
+                    + role.getName() + "\""), null));
 
             if (result.size() == 0) {
                 LOGGER.warn("User {1} does not exist.", role.getName());
@@ -511,7 +562,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
             }
         }
 
-        persistService.commit(commit);
+        ekbService.commit(commit);
         revokePersistenceAccess();
     }
 
@@ -524,8 +575,8 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
         EKBCommit commit = getEKBCommit();
 
         for (Assignment assignment : assignments) {
-            List<Assignment> result =
-                queryService.queryByString(Assignment.class, "uuid:\"" + assignment.getUuid() + "\"");
+            List<Assignment> result = ekbService.query(new SingleModelQuery(Assignment.class, new EDBQueryFilter(
+                    "uuid:\"" + assignment.getUuid() + "\""), null));
 
             if (result.size() == 0) {
                 LOGGER.debug("New Assignment: " + assignment.getUser() + ":" + assignment.getProject());
@@ -536,7 +587,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
             }
         }
 
-        persistService.commit(commit);
+        ekbService.commit(commit);
         revokePersistenceAccess();
     }
 
@@ -549,7 +600,8 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
         EKBCommit commit = getEKBCommit();
 
         for (Assignment assignment : assignments) {
-            List<Role> result = queryService.queryByString(Role.class, "uuid:\"" + assignment.getUuid() + "\"");
+            List<Role> result = ekbService.query(new SingleModelQuery(Assignment.class, new EDBQueryFilter("uuid:\""
+                    + assignment.getUuid() + "\""), null));
 
             if (result.size() == 0) {
                 LOGGER.warn("User {1} does not exist.", assignment.getUuid());
@@ -558,7 +610,7 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
             }
         }
 
-        persistService.commit(commit);
+        ekbService.commit(commit);
         revokePersistenceAccess();
     }
 
@@ -573,31 +625,30 @@ public class SyncronizedUserServiceImpl extends AbstractOpenEngSBService impleme
         if (assignment.getProject() != null && !assignment.getProject().equals("")) {
             query += "project:\"" + assignment.getProject() + "\"";
         }
-
-        return queryService.queryByString(Assignment.class, query);
+        return ekbService.query(new SingleModelQuery(Assignment.class, new EDBQueryFilter(query), null));
     }
 
     private EKBCommit getEKBCommit() {
         EKBCommit result = new EKBCommit();
-        
+
         result.setDomainId("userprojects");
         result.setConnectorId("upload");
         result.setInstanceId("upload");
 
         return result;
     }
-    
+
     private void preparePersistenceAccess() {
 
         if (authenticationContext.getAuthenticatedPrincipal() == null
-            || !(authenticationContext.getAuthenticatedPrincipal() instanceof String)) {
+                || !(authenticationContext.getAuthenticatedPrincipal() instanceof String)) {
             throw new AuthenticationException("A user with DB access must be logged in.");
         }
 
         currentContext = ContextHolder.get().getCurrentContextId();
         ContextHolder.get().setCurrentContextId("up-context");
     }
-    
+
     private void revokePersistenceAccess() {
 
         ContextHolder.get().setCurrentContextId(currentContext);
