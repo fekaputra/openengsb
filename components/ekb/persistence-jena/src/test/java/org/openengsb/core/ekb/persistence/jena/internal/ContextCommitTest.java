@@ -27,8 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import jline.internal.Log;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.riot.RDFDataMgr;
 import org.junit.AfterClass;
@@ -52,6 +50,8 @@ import org.openengsb.core.ekb.api.hooks.EKBPostCommitHook;
 import org.openengsb.core.ekb.api.hooks.EKBPreCommitHook;
 import org.openengsb.core.ekb.persistence.jena.internal.models.SubModel;
 import org.openengsb.core.ekb.persistence.jena.internal.models.TestModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
@@ -65,6 +65,8 @@ public class ContextCommitTest {
     private AuthenticationContext authContext;
     private ModelRegistry registry;
 
+    private static Logger LOGGER = LoggerFactory.getLogger(ContextCommitTest.class);
+
     @Before
     public void setUp() {
         Dataset dataset = TDBFactory.createDataset("src/test/resources/tdb");
@@ -74,7 +76,7 @@ public class ContextCommitTest {
         // mockito stuff
         authContext = mock(AuthenticationContext.class);
         when(authContext.getAuthenticatedPrincipal()).thenReturn("Fajar");
-        
+
         registry = new TestModelRegistry();
         JenaService ontoService = new JenaService(dataset, model, true);
         ontoService.setModelRegistry(registry);
@@ -85,14 +87,14 @@ public class ContextCommitTest {
         this.service = new EKBServiceJena(ontoService, ontoConverter, preHooks, postHooks, errorHooks, authContext);
         ContextHolder.get().setCurrentContextId("test");
     }
-    
+
     @AfterClass
     public static void cleanUp() {
-    	try {
-			FileUtils.cleanDirectory(new File("src/test/resources/"));
-		} catch (IOException e) {
-			Log.info("Failed cleaning test directory", e);
-		}
+        try {
+            FileUtils.cleanDirectory(new File("src/test/resources/"));
+        } catch (IOException e) {
+            LOGGER.info("Failed cleaning test directory", e);
+        }
     }
 
     private EKBCommit createTestInsert() {
@@ -223,7 +225,7 @@ public class ContextCommitTest {
     public void testGetRevision_shouldWork() {
         service.commit(createTestInsert1());
         UUID uuid = service.getLastRevisionId();
-        Log.info("Test Head UUID revision", uuid);
+        LOGGER.info("Test Head UUID revision", uuid);
     }
 
     @Test
@@ -232,53 +234,53 @@ public class ContextCommitTest {
         service.commit(createTestInsert2());
         UUID uuid = service.getLastRevisionId();
         EKBCommit commit = service.loadCommit(uuid);
-        Log.info(commit);
-        Log.info(commit.getInserts());
-        Log.info(commit.getUpdates());
-        Log.info(commit.getDeletes());
-        Log.info(commit.getRevisionNumber());
-        Log.info(commit.getInstanceId());
-        Log.info(commit.getDomainId());
-        Log.info(commit.getConnectorId());
-        Log.info(commit.getParentRevisionNumber());
-        Log.info(commit.getConnectorInformation());
-        Log.info(commit.getComment());
+        LOGGER.info(commit.toString());
+        LOGGER.info(commit.getInserts().toString());
+        LOGGER.info(commit.getUpdates().toString());
+        LOGGER.info(commit.getDeletes().toString());
+        LOGGER.info(commit.getRevisionNumber().toString());
+        LOGGER.info(commit.getInstanceId().toString());
+        LOGGER.info(commit.getDomainId().toString());
+        LOGGER.info(commit.getConnectorId().toString());
+        LOGGER.info(commit.getParentRevisionNumber().toString());
+        LOGGER.info(commit.getConnectorInformation().toString());
+        LOGGER.info(commit.getComment());
     }
-    
+
     @Test
     public void testNonNativeQueryBuilder_ShouldWork() {
-    	QueryRequest queryRequest = QueryRequest.create();
-    	queryRequest.addParameter("id", "A2");
-    	queryRequest.setModelClassName("TestModel");
-    	queryRequest.caseInsensitive();
-    	ParameterizedSparqlString str = JenaQueryRequestConverter.convertSimpleQueryRequest(queryRequest, null);
-    	Log.info(str.toString());
+        QueryRequest queryRequest = QueryRequest.create();
+        queryRequest.addParameter("id", "A2");
+        queryRequest.setModelClassName("TestModel");
+        queryRequest.caseInsensitive();
+        ParameterizedSparqlString str = JenaQueryRequestConverter.convertSimpleQueryRequest(queryRequest, null);
+        LOGGER.info(str.toString());
     }
-    
+
     @Test
     public void testNonNativeQuery_ShouldWork() {
-    	service.commit(createTestInsert1());
-    	service.commit(createTestInsert2());
-    	
-    	QueryRequest queryRequest = QueryRequest.create();
-    	queryRequest.addParameter("id", "A1");
-    	queryRequest.setModelClassName("TestModel");
-    	queryRequest.caseInsensitive();
-    	
-    	Query query = new SingleModelQuery(TestModel.class, new EDBQueryFilter(queryRequest), null);
-    	List<OpenEngSBModel> objs = service.query(query);
-    	Iterator<OpenEngSBModel> objsIter = objs.iterator();
-    	while(objsIter.hasNext()) {
-    		OpenEngSBModel obj = objsIter.next();
-    		Log.info("ID: ", obj.retrieveInternalModelId());
-    		List<OpenEngSBModelEntry> entries = obj.toOpenEngSBModelValues();
-    		Iterator<OpenEngSBModelEntry> entriesIter = entries.iterator();
-    		while(entriesIter.hasNext()) {
-    			OpenEngSBModelEntry entry = entriesIter.next();
-    			Log.info(entry.getKey());
-    			Log.info(entry.getValue()!=null ? entry.getValue() : "NULL");
-    		}
-    	}
+        service.commit(createTestInsert1());
+        service.commit(createTestInsert2());
+
+        QueryRequest queryRequest = QueryRequest.create();
+        queryRequest.addParameter("id", "A1");
+        queryRequest.setModelClassName("TestModel");
+        queryRequest.caseInsensitive();
+
+        Query query = new SingleModelQuery(TestModel.class, new EDBQueryFilter(queryRequest), null);
+        List<OpenEngSBModel> objs = service.query(query);
+        Iterator<OpenEngSBModel> objsIter = objs.iterator();
+        while (objsIter.hasNext()) {
+            OpenEngSBModel obj = objsIter.next();
+            LOGGER.info("ID: ", obj.retrieveInternalModelId());
+            List<OpenEngSBModelEntry> entries = obj.toOpenEngSBModelValues();
+            Iterator<OpenEngSBModelEntry> entriesIter = entries.iterator();
+            while (entriesIter.hasNext()) {
+                OpenEngSBModelEntry entry = entriesIter.next();
+                LOGGER.info(entry.getKey());
+                LOGGER.info(entry.getValue() != null ? entry.getValue().toString() : "NULL");
+            }
+        }
     }
 
 }

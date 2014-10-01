@@ -3,8 +3,6 @@ package org.openengsb.core.ekb.persistence.jena.internal;
 import java.util.List;
 import java.util.UUID;
 
-import jline.internal.Log;
-
 import org.openengsb.core.api.context.ContextHolder;
 import org.openengsb.core.api.security.AuthenticationContext;
 import org.openengsb.core.ekb.api.EKBCommit;
@@ -17,6 +15,8 @@ import org.openengsb.core.ekb.api.hooks.EKBErrorHook;
 import org.openengsb.core.ekb.api.hooks.EKBPostCommitHook;
 import org.openengsb.core.ekb.api.hooks.EKBPreCommitHook;
 import org.openengsb.core.ekb.persistence.jena.internal.api.OntoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Objects;
 
@@ -35,8 +35,11 @@ public class EKBServiceJena implements EKBService {
     private final List<EKBErrorHook> errorHooks;
     private final AuthenticationContext authContext;
 
-    public EKBServiceJena(OntoService ontoService, JenaConverter ontoConverter, List<EKBPreCommitHook> preCommitHooks,
-            List<EKBPostCommitHook> postCommitHooks, List<EKBErrorHook> errorHooks, AuthenticationContext authContext) {
+    private static Logger LOGGER = LoggerFactory.getLogger(EKBServiceJena.class);
+
+    public EKBServiceJena(OntoService ontoService, JenaConverter ontoConverter,
+            List<EKBPreCommitHook> preCommitHooks, List<EKBPostCommitHook> postCommitHooks,
+            List<EKBErrorHook> errorHooks, AuthenticationContext authContext) {
         this.jenaService = ontoService;
         this.ontoConverter = ontoConverter;
         this.preCommitHooks = preCommitHooks;
@@ -47,19 +50,18 @@ public class EKBServiceJena implements EKBService {
 
     @Override
     public void commit(EKBCommit ekbCommit) {
-        Log.debug("Commit of models was called");
+        LOGGER.debug("Commit of models was called");
         runPersistingLogic(ekbCommit, null, false);
-        Log.debug("Commit of models was successful");
+        LOGGER.debug("Commit of models was successful");
     }
 
     /**
-     * Runs the logic of the PersistInterface. Does the sanity checks if check
-     * is set to true. Additionally tests if the head revision of the context
-     * under which the commit is performed has the given revision number if the
+     * Runs the logic of the PersistInterface. Does the sanity checks if check is set to true. Additionally tests if the
+     * head revision of the context under which the commit is performed has the given revision number if the
      * headRevisionCheck flag is set to true.
      */
     private void runPersistingLogic(EKBCommit commit, UUID expectedContextHeadRevision, boolean headRevisionCheck)
-            throws EKBException {
+        throws EKBException {
         String contextId = ContextHolder.get().getCurrentContextId();
 
         if (headRevisionCheck) {
@@ -82,7 +84,7 @@ public class EKBServiceJena implements EKBService {
      */
     private void performPersisting(JenaCommit commit, EKBCommit source) {
         try {
-            Log.info("performPersisting: " + commit);
+            LOGGER.info("performPersisting: " + commit);
             jenaService.commit(commit);
             source.setRevisionNumber(commit.getRevision());
             source.setParentRevisionNumber(commit.getParentRevision());
@@ -92,14 +94,14 @@ public class EKBServiceJena implements EKBService {
     }
 
     /**
-     * Tests if the head revision for the given context matches the given
-     * revision number. If this is not the case, an EKBConcurrentException is
-     * thrown.
+     * Tests if the head revision for the given context matches the given revision number. If this is not the case, an
+     * EKBConcurrentException is thrown.
      */
-    private void checkForContextHeadRevision(String contextId, UUID expectedHeadRevision) throws EKBConcurrentException {
+    private void checkForContextHeadRevision(String contextId, UUID expectedHeadRevision)
+        throws EKBConcurrentException {
         if (!Objects.equal(jenaService.getLastRevisionNumberOfContext(contextId), expectedHeadRevision)) {
             throw new EKBConcurrentException("The current revision of the context does not match the "
-                    + "expected one.");
+                + "expected one.");
         }
     }
 
@@ -113,7 +115,7 @@ public class EKBServiceJena implements EKBService {
             } catch (EKBException e) {
                 throw new EKBException("EDBException is thrown in a pre commit hook.", e);
             } catch (Exception e) {
-                Log.warn("An exception is thrown in a EKB pre commit hook.", e);
+                LOGGER.warn("An exception is thrown in a EKB pre commit hook.", e);
             }
         }
     }
@@ -126,7 +128,7 @@ public class EKBServiceJena implements EKBService {
             try {
                 hook.onPostCommit(commit);
             } catch (Exception e) {
-                Log.warn("An exception is thrown in a EKB post commit hook.", e);
+                LOGGER.warn("An exception is thrown in a EKB post commit hook.", e);
             }
         }
     }
@@ -145,9 +147,9 @@ public class EKBServiceJena implements EKBService {
 
     @Override
     public void commit(EKBCommit ekbCommit, UUID headRevision) {
-        Log.debug("Commit of models was called");
+        LOGGER.debug("Commit of models was called");
         runPersistingLogic(ekbCommit, headRevision, true);
-        Log.debug("Commit of models was successful");
+        LOGGER.debug("Commit of models was successful");
     }
 
     @Override
@@ -164,7 +166,7 @@ public class EKBServiceJena implements EKBService {
     private void checkHeadRevision(UUID expectedHeadRevision) {
         if (!Objects.equal(jenaService.getCurrentRevisionNumber(), expectedHeadRevision)) {
             throw new EKBConcurrentException("The current revision of the context does not match the "
-                    + "expected one.");
+                + "expected one.");
         }
     }
 
@@ -175,7 +177,7 @@ public class EKBServiceJena implements EKBService {
 
     @Override
     public <T> List<T> query(Query query) {
-    	return jenaService.query(query);
+        return jenaService.query(query);
     }
 
     @Override

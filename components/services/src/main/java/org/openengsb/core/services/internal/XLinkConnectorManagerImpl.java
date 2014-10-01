@@ -36,7 +36,9 @@ import org.openengsb.core.api.xlink.model.XLinkConnectorRegistration;
 import org.openengsb.core.api.xlink.model.XLinkConnectorView;
 import org.openengsb.core.api.xlink.model.XLinkObject;
 import org.openengsb.core.api.xlink.service.XLinkConnectorManager;
-import org.openengsb.core.ekb.api.QueryInterface;
+import org.openengsb.core.ekb.api.EDBQueryFilter;
+import org.openengsb.core.ekb.api.EKBService;
+import org.openengsb.core.ekb.api.SingleModelQuery;
 import org.openengsb.core.ekb.api.TransformationEngine;
 
 public class XLinkConnectorManagerImpl extends ConnectorManagerImpl implements XLinkConnectorManager {
@@ -45,11 +47,11 @@ public class XLinkConnectorManagerImpl extends ConnectorManagerImpl implements X
     private int xLinkExpiresIn = 3;
 
     private TransformationEngine transformationEngine;
-    private QueryInterface queryService;
+    private EKBService queryService;
 
     @Override
     public void registerWithXLink(String connectorId, String remoteHostId, String toolName,
-            ModelViewMapping... modelViewMappings) {
+        ModelViewMapping... modelViewMappings) {
         // TODO: check that connector exists
         // TODO: overwrite delete connector s.t. it also removes xlink registration
         // if (!connectorExists(connectorId)) {
@@ -59,7 +61,7 @@ public class XLinkConnectorManagerImpl extends ConnectorManagerImpl implements X
             convertToMapWithModelDescriptionAsKey(modelViewMappings);
         synchronized (xLinkRegistrations) {
             xLinkRegistrations.put(connectorId, new XLinkConnectorRegistration(remoteHostId, connectorId, toolName,
-                modelViewsMap));
+                    modelViewsMap));
         }
     }
 
@@ -86,9 +88,8 @@ public class XLinkConnectorManagerImpl extends ConnectorManagerImpl implements X
     @Override
     public String publishXLink(String connectorId, Object modelObject, boolean hostOnly) {
         XLinkConnectorRegistration registration = xLinkRegistrations.get(connectorId);
-        Collection<XLinkConnectorRegistration> registrations = 
-                hostOnly ? getXLinkRegistrations(registration.getHostId()) 
-                : xLinkRegistrations.values();
+        Collection<XLinkConnectorRegistration> registrations =
+            hostOnly ? getXLinkRegistrations(registration.getHostId()) : xLinkRegistrations.values();
 
         ModelDescription modelDescription = ModelWrapper.wrap(modelObject).getModelDescription();
         for (XLinkConnectorRegistration r : registrations) {
@@ -111,7 +112,7 @@ public class XLinkConnectorManagerImpl extends ConnectorManagerImpl implements X
     }
 
     private List<XLinkObject> collectXLinkObjects(Object modelObject, ModelDescription modelDescription,
-            XLinkConnectorRegistration registration) {
+        XLinkConnectorRegistration registration) {
         List<XLinkObject> xLinkObjects = new ArrayList<>();
         for (Entry<ModelDescription, XLinkConnectorView[]> entry : registration.getModelsToViews().entrySet()) {
             if (modelDescription.equals(entry.getKey())) {
@@ -128,10 +129,14 @@ public class XLinkConnectorManagerImpl extends ConnectorManagerImpl implements X
     private Object transformAndMerge(ModelDescription sourceModel, ModelDescription targetModel, Object modelObject) {
         Object transformedObject = transformationEngine.performTransformation(sourceModel, targetModel, modelObject);
         if (transformedObject instanceof OpenEngSBModel
-                && ((OpenEngSBModel) transformedObject).retrieveInternalModelId() != null) {
-            List<?> result = queryService.query(transformedObject.getClass(),
-                QueryRequest.query(((OpenEngSBModel) transformedObject).retrieveInternalModelIdName(),
-                    ((OpenEngSBModel) transformedObject).retrieveInternalModelId()));
+            && ((OpenEngSBModel) transformedObject).retrieveInternalModelId() != null) {
+            List<?> result =
+                queryService.query(new SingleModelQuery(transformedObject.getClass(), new EDBQueryFilter(QueryRequest
+                        .query(((OpenEngSBModel) transformedObject).retrieveInternalModelIdName(),
+                                ((OpenEngSBModel) transformedObject).retrieveInternalModelId())), null));
+            // queryService.query(transformedObject.getClass(), QueryRequest.query(
+            // ((OpenEngSBModel) transformedObject).retrieveInternalModelIdName(),
+            // ((OpenEngSBModel) transformedObject).retrieveInternalModelId()));
             if (!result.isEmpty()) {
                 transformedObject =
                     transformationEngine.performTransformation(sourceModel, targetModel, modelObject, result.get(0));
@@ -157,7 +162,7 @@ public class XLinkConnectorManagerImpl extends ConnectorManagerImpl implements X
     }
 
     private Map<ModelDescription, XLinkConnectorView[]> convertToMapWithModelDescriptionAsKey(
-            ModelViewMapping[] modelViewMappings) {
+        ModelViewMapping[] modelViewMappings) {
         Map<ModelDescription, XLinkConnectorView[]> convertedMap = new HashMap<>();
         for (ModelViewMapping mapping : modelViewMappings) {
             convertedMap.put(mapping.getDescription(), mapping.getViews());
@@ -181,8 +186,7 @@ public class XLinkConnectorManagerImpl extends ConnectorManagerImpl implements X
         this.xLinkExpiresIn = xLinkExpiresIn;
     }
 
-    public void setTransformationEngine(
-            TransformationEngine transformationEngine) {
+    public void setTransformationEngine(TransformationEngine transformationEngine) {
         this.transformationEngine = transformationEngine;
     }
 }

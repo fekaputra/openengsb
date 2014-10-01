@@ -170,7 +170,7 @@
     <bundle start-level='40'>mvn:org.openengsb.framework.ekb/org.openengsb.framework.ekb.transformation.wonderland/${project.version}</bundle>
     <bundle start-level='40'>mvn:org.openengsb.framework.ekb/org.openengsb.framework.ekb.persistence.query.edb/${project.version}</bundle>
     <bundle start-level='40'>mvn:org.openengsb.framework.ekb/org.openengsb.framework.ekb.persistence.persist.edb/${project.version}</bundle>
-    <bundle start-level='40'>mvn:org.apache.jena/jena-tdb/1.1.0</bundle>
+    <bundle start-level='40'>mvn:org.apache.jena/org.apache.jena/${jena.version}</bundle>
     <bundle start-level='40'>mvn:org.openengsb.framework.ekb/org.openengsb.framework.ekb.persistence.jena/${project.version}</bundle>
     <bundle start-level='40'>mvn:org.openengsb.framework/org.openengsb.framework.util/${project.version}</bundle>
     <bundle start-level='40'>mvn:org.openengsb.framework/org.openengsb.framework.common/${project.version}</bundle>

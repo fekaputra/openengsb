@@ -7,10 +7,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-import jline.internal.Log;
-
 import org.openengsb.core.ekb.persistence.jena.internal.api.OntoException;
 import org.openengsb.core.ekb.persistence.jena.internal.api.OwlHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -42,6 +42,8 @@ public class JenaCommit {
     private String domainId;
     private String connectorId;
     private String instanceId;
+
+    private static Logger LOGGER = LoggerFactory.getLogger(JenaCommit.class);
 
     /**
      * Create a new JenaCommit
@@ -108,8 +110,8 @@ public class JenaCommit {
             if (node != null) {
                 Object obj = node.visitWith(jv);
                 if (propName.equals(JenaConstants.CDL_COMMIT_PARENT_REVISION)
-                        || propName.equals(JenaConstants.CDL_COMMIT_CHILD_REVISION)
-                        || propName.equals(JenaConstants.CDL_COMMIT_REVISION)) {
+                    || propName.equals(JenaConstants.CDL_COMMIT_CHILD_REVISION)
+                    || propName.equals(JenaConstants.CDL_COMMIT_REVISION)) {
                     obj = UUID.fromString((String) obj);
                 }
                 String methodName = "set" + property; // fieldName
@@ -117,12 +119,12 @@ public class JenaCommit {
                     Method m = JenaCommit.class.getMethod(methodName, clazz);
                     m.invoke(this, obj);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    Log.info("Fault in Reflection: setMethod is not correct", e);
+                    LOGGER.info("Fault in Reflection: setMethod is not correct", e);
                 } catch (NoSuchMethodException nsme) {
-                    Log.info("Fault in Reflection: there is no such method", nsme);
+                    LOGGER.info("Fault in Reflection: there is no such method", nsme);
                 }
 
-                Log.info("setProperty: " + obj);
+                LOGGER.info("setProperty: " + obj);
             }
         }
     }

@@ -46,8 +46,8 @@ public class TestModel2 implements OpenEngSBModel {
 
     public enum ENUM {
         A,
-            B,
-            C
+        B,
+        C
     }
 
     @Override
@@ -56,13 +56,13 @@ public class TestModel2 implements OpenEngSBModel {
         entries.addAll(tail.values());
         return entries;
     }
-    
+
     @Override
     public List<OpenEngSBModelEntry> toOpenEngSBModelValues() {
-        List<OpenEngSBModelEntry> entries = Arrays.asList(new OpenEngSBModelEntry("id", id, String.class),
-            new OpenEngSBModelEntry("name", name, String.class),
-            new OpenEngSBModelEntry("date", date, Date.class),
-            new OpenEngSBModelEntry("test", enumeration, ENUM.class));
+        List<OpenEngSBModelEntry> entries =
+            Arrays.asList(new OpenEngSBModelEntry("id", id, String.class), new OpenEngSBModelEntry("name", name,
+                    String.class), new OpenEngSBModelEntry("date", date, Date.class), new OpenEngSBModelEntry("test",
+                    enumeration, ENUM.class));
         for (int i = 0; i < list.size(); i++) {
             entries.add(new OpenEngSBModelEntry("list" + i, list.get(i), String.class));
         }
@@ -182,5 +182,10 @@ public class TestModel2 implements OpenEngSBModel {
     @Override
     public String retrieveModelVersion() {
         return new Version(1, 0, 0).toString();
+    }
+
+    @Override
+    public String retrieveInternalModelIdName() {
+        return "id";
     }
 }
